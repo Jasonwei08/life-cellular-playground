@@ -4,7 +4,8 @@ const types = new Map([
   ['/index.html', 'text/html; charset=utf-8'],
   ['/style.css', 'text/css; charset=utf-8'],
   ['/app.js', 'text/javascript; charset=utf-8'],
-  ['/engine.js', 'text/javascript; charset=utf-8']
+  ['/life_engine.js', 'text/javascript; charset=utf-8'],
+  ['/life_engine.wasm', 'application/wasm']
 ]);
 const port = Number(process.env.PORT || 4173);
 if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('PORT must be an integer from 1 to 65535');

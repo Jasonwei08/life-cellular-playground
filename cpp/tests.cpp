@@ -1,4 +1,4 @@
-// Correctness tests for the C++ port of engine.js. Not a general test
+// Correctness tests for the native Game of Life engine. Not a general test
 // framework -- just direct checks against known Game of Life behavior,
 // run via `tests.exe`, exiting non-zero on the first failure.
 

@@ -1,4 +1,8 @@
-import {COLS,ROWS,patterns,evolve,createPattern} from './engine.js';
+import createLifeModule from './life_engine.js';
+const Life=await createLifeModule();
+const {COLS,ROWS,evolve}=Life;
+const patterns=Life.patterns();
+function createPattern(pattern){return Life.createPattern(pattern.id)}
 const icons={play:'<path d="m6 3 12 7-12 7Z" fill="currentColor" stroke="none"/>',pause:'<path d="M7 4v12M13 4v12" stroke-width="3"/>',step:'<path d="m4 4 9 6-9 6Z"/><path d="M16 4v12"/>',reset:'<path d="M4 7a7 7 0 1 1-1 6M4 3v5h5"/>',shuffle:'<path d="M3 5h3c4 0 4 10 8 10h3M3 15h3c2 0 3-3 4-5s2-5 4-5h3M14 2l3 3-3 3m0 4 3 3-3 3"/>',clear:'<path d="m3 12 8-9 7 6-8 9H7ZM7 8l7 6M10 18h8"/>',help:'<circle cx="10" cy="10" r="8"/><path d="M8 7a2 2 0 1 1 3 2c-1 1-1 1-1 2M10 14h.01"/>'};
 const icon=(n)=>`<svg class="icon" viewBox="0 0 20 20" aria-hidden="true">${icons[n]}</svg>`;
 function patternSvg(p){const w=Math.max(...p.rows.map(r=>r.length));return `<svg viewBox="-1 -1 ${w+2} ${p.rows.length+2}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${p.rows.map((r,y)=>[...r].map((v,x)=>v==='1'?`<rect x="${x}" y="${y}" width=".85" height=".85"/>`:'').join('')).join('')}</svg>`}

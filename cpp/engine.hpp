@@ -29,7 +29,7 @@ struct EvolveResult {
 // Advances the grid by one generation using Conway's B3/S23 rules on a
 // toroidal (wrapping) grid. A surviving cell's value is incremented
 // (capped at 255) so callers can distinguish long-lived cells from
-// newborns, matching the semantics of engine.js's evolve().
+// newborns.
 EvolveResult evolve(const std::vector<std::uint8_t>& cells, int cols = COLS, int rows = ROWS);
 
 // Places a pattern centered on a cols x rows grid and returns the

@@ -6,7 +6,7 @@
   "description": "An interactive Conway's Game of Life playground.",
   "scripts": {
     "start": "node server.mjs",
-    "check": "node --check app.js && node --check engine.js && node --check server.mjs"
+    "check": "node --check app.js && node --check life_engine.js && node --check server.mjs"
   },
   "engines": { "node": ">=18" }
 }

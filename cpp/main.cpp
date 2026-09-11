@@ -1,5 +1,6 @@
-// Command-line harness for the C++ port of engine.js: runs a few generations
-// of a chosen pattern, printing the grid and generation stats to stdout.
+// Command-line harness for the native Game of Life engine: runs a few
+// generations of a chosen pattern, printing the grid and generation stats
+// to stdout.
 //
 // Usage: life [pattern-id] [generations]
 //   pattern-id defaults to "glider"; generations defaults to 4.
