@@ -1,0 +1,12 @@
+{
+  "name": "life-cellular-playground",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "An interactive Conway's Game of Life playground.",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check app.js && node --check engine.js && node --check server.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
