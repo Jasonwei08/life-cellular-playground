@@ -1,7 +1,9 @@
 import createLifeModule from "./life_engine.js";
-const Life = await createLifeModule();
-self.onmessage = ({ data: { config: c, rules } }) => {
+// Register the listener before awaiting Wasm so the first browser message is not lost.
+let modulePromise;
+self.onmessage = async ({ data: { config: c, rules } }) => {
   try {
+    const Life = await (modulePromise ??= createLifeModule());
     const total = rules.length * c.trials * c.noiseLevels.length;
     for (const rule of rules)
       for (const noise of c.noiseLevels)

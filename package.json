@@ -10,9 +10,17 @@
     "build": "node scripts/build.mjs",
     "test": "node scripts/build.mjs --test",
     "test:integration": "node scripts/integration-test.mjs",
-    "experiments": "node scripts/representative-experiments.mjs"
+    "experiments": "node scripts/representative-experiments.mjs",
+    "build:site": "node scripts/build-site.mjs",
+    "serve:production": "node server.mjs --dir build/wasm/site --base /life-cellular-playground/",
+    "test:production": "playwright test",
+    "check:deployment": "node scripts/check-deployment.mjs"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.1",
+    "yaml": "2.8.3"
   }
 }

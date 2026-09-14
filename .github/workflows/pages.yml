@@ -1,0 +1,75 @@
+﻿name: Build and deploy Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22.16.0"
+          cache: npm
+      - name: Checkout pinned Emscripten SDK
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: emscripten-core/emsdk
+          ref: 5eb0bde7585670252e8ba05e9d361627bffd08b5 # 6.0.9
+          path: build/emsdk
+          persist-credentials: false
+      - name: Install toolchain and test dependencies
+        run: |
+          ./build/emsdk/emsdk install 6.0.9
+          ./build/emsdk/emsdk activate 6.0.9
+          python -m pip install cmake==3.31.6 ninja==1.11.1.4
+          npm ci
+      - name: Build production site and run C++ tests
+        run: |
+          source build/emsdk/emsdk_env.sh
+          npm run build:site
+      - name: Validate workflow and staged assets
+        run: |
+          npm run check
+          npm run check:deployment
+      - name: Test browser controls, workers, subpaths and downloads
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:production
+      - name: Upload static Pages artifact
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: build/wasm/site
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
